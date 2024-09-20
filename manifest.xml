@@ -3,14 +3,14 @@
 <Plugin certificationLevel="None" displayName="Useless" minSystemVersion="8.3" name="Useless" version="1.0">
   <Attributes>
     <Map>
-    <!--
+    
       <entry key="minUpgradableVersion" value="0.1" />
       <entry key="fullPage">
         <value>
-          <FullPage title="Example Plugin" />
+          <FullPage title="Useless" />
         </value>
       </entry>
-      -->
+      
       <entry key="restResources">
       	<value>
       		<List>
@@ -18,14 +18,15 @@
       		</List>
       	</value>
       </entry>
-      <!--
+      
       <entry key="serviceExecutors">
       	<value>
       		<List>
-      			<String>com.skillstorm.server.OfficeAddService</String>
+      			<String>com.bestcorp.server.IdentityGetAutoService</String>
       		</List>
       	</value>
       </entry>
+      <!--
       <entry key="taskExecutors">
       	<value>
       		<List>

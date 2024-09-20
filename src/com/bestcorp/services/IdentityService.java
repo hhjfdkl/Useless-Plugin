@@ -49,7 +49,7 @@ public class IdentityService
 
 
 //This section concerns pulling data from SailPoint and assigning values in our plugin's db
-    public void createIdentities(List<Identity> identities) throws GeneralException
+    private void createIdentities(List<Identity> identities) throws GeneralException
     {
         Connection connection = null;
         PreparedStatement statement = null;

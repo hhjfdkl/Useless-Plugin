@@ -3,3 +3,4 @@
 build.properties
 user.build.properties
 bin/
+build/

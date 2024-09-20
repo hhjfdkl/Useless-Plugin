@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE sailpoint PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+
+<sailpoint>
+
+	<ServiceDefinition name="Automatically Pull Identities in from SailPoint" executor="com.bestcorp.server.IdentityGetAutoService" interval="30" hosts="global">
+
+		<Description>
+			A service that automatically pulls identities and adds them to the plugin's database
+		</Description>
+
+		<Attributes>
+
+			<Map>
+				<entry key="pluginName" value="Useless"/>
+			</Map>
+
+		</Attributes>
+
+	</ServiceDefinition>
+
+</sailpoint>
