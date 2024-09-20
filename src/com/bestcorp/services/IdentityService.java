@@ -37,7 +37,7 @@ public class IdentityService
     private PluginContext context;
     //private static int crawl = 0; 
     private static int position = 0;    //tracks where we are
-    private static int quantity = 15;   //the number of records we will pull from db
+    // private static int quantity = 15; //commented this out since we're passing it in via executor  //the number of records we will pull from db
     private static int identityQty = 0; //this will be set by count method (total number of identities in SailPoint)
     private static int iterations = 0;  //counts the number of times we've execute. This resets every 5 iterations to recalculate identityQty
 
@@ -51,6 +51,7 @@ public class IdentityService
 //This section concerns pulling data from SailPoint and assigning values in our plugin's db
     private void createIdentities(List<Identity> identities) throws GeneralException
     {
+        System.out.println("Received " + identities.size() + " identities");
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -62,11 +63,12 @@ public class IdentityService
                 statement = PluginBaseHelper.prepareStatement(
                     connection
                     , "INSERT INTO ep_plugin_useless (spt_id, spt_name) VALUES (?, ?)"
-                    , identity.getId()
+                    , identity.getSptId()
                     , identity.getSptName());
 
                 statement.executeUpdate();
             }
+            System.out.println("Created " + identities.size() + " identities");
             
         }
         catch(SQLException e)
@@ -89,7 +91,7 @@ public class IdentityService
      * 
      * @throws GeneralException
      */
-    public void getSpIdentities() throws GeneralException
+    public void getSpIdentities(int quantity) throws GeneralException
     {
         if(iterations%5==0)
         {
@@ -129,7 +131,9 @@ public class IdentityService
                         )
                     );
             }
+            System.out.println("Got " + identities.size() + " identities");
             createIdentities(identities);
+
 
             position += quantity;
             iterations++;

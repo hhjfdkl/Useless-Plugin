@@ -15,6 +15,7 @@ public class IdentityGetAutoService extends BasePluginService
 {
 
     private IdentityService service;
+    private int idsToPull;
     
     public IdentityGetAutoService()
     {
@@ -22,9 +23,22 @@ public class IdentityGetAutoService extends BasePluginService
     }
 
     @Override
+    public void configure(SailPointContext context)
+    {
+        idsToPull = getSettingInt("idsToAdd");
+    }
+
+    @Override
     public void execute(SailPointContext context) throws GeneralException
     {
-        service.getSpIdentities();
+        if(idsToPull<=0)
+        {
+            service.getSpIdentities(5);
+        }
+        else
+        {
+            service.getSpIdentities(idsToPull);
+        }
     }
 
     @Override

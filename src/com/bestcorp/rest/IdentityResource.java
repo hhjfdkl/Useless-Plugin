@@ -24,11 +24,25 @@ public class IdentityResource extends BasePluginResource
         return new IdentityService(this);
     }
 
+    @POST
+    @Path("getNow")
+    @AllowAll
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public void addIdentities() throws GeneralException
+    {
+        //we'll add a request body for this, but for now we'll just have it add 3 identities
+        service().getSpIdentities(3);
+
+    }
+
     @Override
     public String getPluginName() 
     {
         return "Useless";
     }
+
+
 
     @POST
     @Path("add")
