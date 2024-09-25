@@ -57,7 +57,6 @@ public class IdentityService
 
         try
         {
-            connection = context.getConnection();
             for(Identity identity : identities)
             {
                 statement = PluginBaseHelper.prepareStatement(
@@ -70,6 +69,7 @@ public class IdentityService
             }
             System.out.println("Created " + identities.size() + " identities");
             
+            connection = context.getConnection();
         }
         catch(SQLException e)
         {
@@ -186,7 +186,32 @@ public class IdentityService
      */
 
     //CREATE
+    public void createIdentity() throws GeneralException
+    {
+        Connection connection = null;
+        PreparedStatement statement = null;
 
+        try
+        {
+            connection = context.getConnection();
+            statement = PluginBaseHelper.prepareStatement(connection, "USE identityiq;");
+            statement.execute();
+            statement = PluginBaseHelper.prepareStatement(connection, "SELECT COUNT(id) FROM spt_identity;");
+            ResultSet result = statement.executeQuery();
+
+            if(result.next())
+                identityQty = result.getInt("COUNT(id)");
+        }
+        catch(SQLException e)
+        {
+            throw new GeneralException(e);
+        }
+        finally
+        {
+            IOUtil.closeQuietly(statement);
+            IOUtil.closeQuietly(connection);
+        }
+    }
 
     //READ
 
