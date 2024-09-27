@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bestcorp.models.Identity;
+import com.bestcorp.security.Hash;
 
 import sailpoint.plugin.PluginBaseHelper;
 import sailpoint.plugin.PluginContext;
@@ -186,10 +187,155 @@ public class IdentityService
      */
 
     //CREATE
+    public void createIdentity(String name) throws GeneralException
+    {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        Hash h = new Hash();    //is used to create a mock sp id
 
+        try
+        {
+            name += (System.currentTimeMillis()/1000L);
+            connection = context.getConnection();
+            statement = PluginBaseHelper.prepareStatement(connection
+                , "INSERT INTO ep_plugin_useless (spt_id, spt_name) VALUES (?, ?);"
+                , h.getMD5Hash(name)
+                , name);
+            statement.executeUpdate();
+            System.out.println("Identity created");
+        }
+        catch(SQLException e)
+        {
+            throw new GeneralException(e);
+        }
+        finally
+        {
+            IOUtil.closeQuietly(statement);
+            IOUtil.closeQuietly(connection);
+        }
+    }
 
     //READ
+    public Identity readIdentityById(int id) throws GeneralException
+    {
+        Connection connection = null;
+        PreparedStatement statement = null;
 
+        try
+        {
+            connection = context.getConnection();
+            statement = PluginBaseHelper.prepareStatement(connection, "SELECT id, spt_id, spt_name FROM ep_plugin_useless WHERE id = ?", id);
+            ResultSet result = statement.executeQuery();
+            Identity identity = null;
+            if(result.next())
+            {
+                identity = new Identity(
+                      result.getInt("id")
+                    , result.getString("spt_id")
+                    , result.getString("spt_name")
+                    );
+            }
+            return identity;
+            
+        }
+        catch(SQLException e)
+        {
+            throw new GeneralException(e);
+        }
+        finally
+        {
+            IOUtil.closeQuietly(statement);
+            IOUtil.closeQuietly(connection);
+        }
+    }
+    
+    //May implement method for reading identity by name, but unecessary at this time
+
+
+    public List<Identity> readAllIdentities(int page) throws GeneralException
+    {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try
+        {
+            int limit = 15;
+            int offset = (limit * page) - limit;
+            System.out.println("Page: " + page + ", Limit: " + limit + ", Offset: " + offset);
+            connection = context.getConnection();
+            statement = PluginBaseHelper.prepareStatement(connection, "SELECT id, spt_id, spt_name FROM ep_plugin_useless LIMIT ? OFFSET ?", limit, offset);
+            ResultSet result = statement.executeQuery();
+            List<Identity> identities = new ArrayList<>();
+            while(result.next())
+            {
+                identities.add
+                (
+                    new Identity
+                    (
+                          result.getInt("id")
+                        , result.getString("spt_id")
+                        , result.getString("spt_name")
+                    )
+                );
+                
+            }
+
+            
+
+            return identities;
+            
+        }
+        catch(SQLException e)
+        {
+            throw new GeneralException(e);
+        }
+        finally
+        {
+            IOUtil.closeQuietly(statement);
+            IOUtil.closeQuietly(connection);
+        }
+    }
+    
+    
+    public List<Identity> readAllIdentities() throws GeneralException
+    {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try
+        {
+            connection = context.getConnection();
+            statement = PluginBaseHelper.prepareStatement(connection, "SELECT id, spt_id, spt_name FROM ep_plugin_useless");
+            ResultSet result = statement.executeQuery();
+            List<Identity> identities = new ArrayList<>();
+            while(result.next())
+            {
+                identities.add
+                (
+                    new Identity
+                    (
+                          result.getInt("id")
+                        , result.getString("spt_id")
+                        , result.getString("spt_name")
+                    )
+                );
+                
+            }
+            return identities;
+            
+        }
+        catch(SQLException e)
+        {
+            throw new GeneralException(e);
+        }
+        finally
+        {
+            IOUtil.closeQuietly(statement);
+            IOUtil.closeQuietly(connection);
+        }
+    }
+
+    
 
     //UPDATE
 

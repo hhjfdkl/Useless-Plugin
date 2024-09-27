@@ -1,14 +1,18 @@
 package com.bestcorp.rest;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.bestcorp.models.Identity;
 import com.bestcorp.services.IdentityService;
 
 import sailpoint.rest.plugin.AllowAll;
@@ -25,7 +29,7 @@ public class IdentityResource extends BasePluginResource
     }
 
     @POST
-    @Path("getNow")
+    @Path("addNow")
     @AllowAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -49,27 +53,41 @@ public class IdentityResource extends BasePluginResource
     @AllowAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public void createIdentity()
+    public void createIdentity(String name) throws GeneralException
     {
-        //once service has create method we can put it here
+        service().createIdentity(name);
     }
 
-    /**
-     * Todo - needs refactoring so we aren't pulling hundreds of identities
-     * @return
-     * @throws GeneralException
-     
+
+    @GET
+    @Path("get/{id}")
+    @AllowAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public Identity getIdentity(@PathParam("id") int id) throws GeneralException
+    {
+        return service().readIdentityById(id);
+    }
+
+
+    @GET
+    @Path("all/{page}")
+    @AllowAll
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Identity> getAllIdentities(@PathParam("page") int page) throws GeneralException
+    {
+        return service().readAllIdentities(page);
+    }
+
     @GET
     @Path("all")
     @AllowAll
     @Produces(MediaType.APPLICATION_JSON)
     public List<Identity> getAllIdentities() throws GeneralException
     {
-        //This will return 15 based on page - refactor
-        return service.getAllIdentities
+        return service().readAllIdentities();
     }
-    */
 
+    
     /**
      * todo
      
