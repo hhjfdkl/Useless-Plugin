@@ -3,8 +3,10 @@ package com.bestcorp.rest;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -88,15 +90,38 @@ public class IdentityResource extends BasePluginResource
     }
 
     
-    /**
-     * todo
-     
     @PUT
+    @Path("update")
+    @AllowAll
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public void updateIdentity(Identity identity) throws GeneralException
+    {
+        service().updateIdentity(identity);
+    }
 
+    //might not need this one
+    @PUT
+    @Path("update/{id}")
+    @AllowAll
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public void updateIdentity(@PathParam("id") int id, Identity identity) throws GeneralException
+    {
+        identity.setId(id); //doing this here in case our endpoint is different
+        service().updateIdentity(identity);
+    }
 
-
+    
     @DELETE
-    */
+    @Path("delete/{id}")
+    @AllowAll
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public void deleteIdentity(@PathParam("id") int id) throws GeneralException
+    {
+        service().deleteIdentity(id);
+    }
 
 
 }

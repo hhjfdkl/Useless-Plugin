@@ -338,10 +338,67 @@ public class IdentityService
     
 
     //UPDATE
+    public void updateIdentity(Identity identity) throws GeneralException
+    {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        //TODO: check db to see if our passed int identity is different than the original
+        //also MD5 hash the new spt_id if that is different
+
+        try
+        {
+            
+
+            connection = context.getConnection();
+            statement = PluginBaseHelper.prepareStatement
+            (     connection
+                , "UPDATE ep_plugin_useless SET spt_id = ?, spt_name = ? WHERE id = ?"
+                , identity.getSptId()
+                , identity.getSptName()
+                , identity.getId()
+            );
+            statement.executeUpdate();
+            
+            
+        }
+        catch(SQLException e)
+        {
+            throw new GeneralException(e);
+        }
+        finally
+        {
+            IOUtil.closeQuietly(statement);
+            IOUtil.closeQuietly(connection);
+        }
+    }
 
 
     //DELETE
+    public void deleteIdentity(int id) throws GeneralException
+    {
+        Connection connection = null;
+        PreparedStatement statement = null;
 
+        try
+        {
+            connection = context.getConnection();
+            statement = PluginBaseHelper.prepareStatement(connection, "DELETE FROM ep_plugin_useless WHERE id = ?", id);
+            statement.executeUpdate();
+            
+            
+            
+        }
+        catch(SQLException e)
+        {
+            throw new GeneralException(e);
+        }
+        finally
+        {
+            IOUtil.closeQuietly(statement);
+            IOUtil.closeQuietly(connection);
+        }
+    }
 
 
 }
