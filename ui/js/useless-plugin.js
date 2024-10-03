@@ -2,6 +2,7 @@
 var page = 1;
 
 
+//base add function - gets our identities to display on the page
 async function getAllIdentities(page)  //it says get all but it really only gets by page number - 15 per page (see identity service class)
 {
     if(page < 1 || Number.isNaN(page))
@@ -35,6 +36,24 @@ async function getAllIdentities(page)  //it says get all but it really only gets
         
         document.getElementById('table-body').appendChild(row);
     }
+}
+
+//adds three identities now
+async function addThree()
+{
+    const url = PluginHelper.getPluginRestUrl('identity/addNow');
+    const newHeaders = new Headers();
+    newHeaders.append("X-XSRF-TOKEN", PluginHelper.getCsrfToken());
+    
+    const options =
+    {
+          method: "POST"
+        , headers: newHeaders
+        , redirect: "follow"
+    }
+
+    await fetch(url, options).catch(err => console.log(err));
+    await getAllIdentities(page);
 }
 
 

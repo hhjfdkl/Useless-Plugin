@@ -12,8 +12,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.hibernate.annotations.UpdateTimestamp;
-
 import com.bestcorp.models.Identity;
 import com.bestcorp.services.IdentityService;
 
@@ -33,7 +31,6 @@ public class IdentityResource extends BasePluginResource
     @POST
     @Path("addNow")
     @AllowAll
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public void addIdentities() throws GeneralException
     {
